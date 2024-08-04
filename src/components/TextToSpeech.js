@@ -14,6 +14,7 @@ const TextToSpeech = () => {
       // Find and set the desired Marathi voice
       const targetVoice = availableVoices.find(voice => voice.name.includes('Male') && voice.lang === 'mr-IN') ||
                           availableVoices.find(voice => voice.name === 'Microsoft Aarohi Online (Natural) - Marathi (India) (mr-IN)') || 
+                          availableVoices.find(voice => voice.lang === 'hi-IN') || 
                           availableVoices.find(voice => voice.lang === 'mr-IN') || 
                           availableVoices.find(voice => voice.lang === 'en-US'); // Fallback to English if no Marathi voice is available
       setSelectedVoice(targetVoice);
