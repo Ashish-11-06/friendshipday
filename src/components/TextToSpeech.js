@@ -1,7 +1,7 @@
 // src/TextToSpeech.js
 import React, { useState, useEffect } from 'react';
 
-const predefinedMessage = "अक्का, अहो अक्का. अक्का तमभाकु खालली का? अहो अक्का खाली का  तमभाकू ? आ खाली का ";
+const predefinedMessage = "अक्का, अहो अक्का. तमभाकू खाली   का? अहो अक्का खाली  तमभाकू का  ... ? आ.  ";
 
 const TextToSpeech = () => {
   const [selectedVoice, setSelectedVoice] = useState(null);
@@ -12,7 +12,7 @@ const TextToSpeech = () => {
       console.log('Available voices:', availableVoices); // Log available voices
 
       // Find and set the desired Marathi voice
-      const targetVoice = availableVoices.find(voice => voice.name.includes('female') && voice.lang === 'mr-IN') ||
+      const targetVoice = availableVoices.find(voice => voice.name.includes('male') && voice.lang === 'mr-IN') ||
                           availableVoices.find(voice => voice.name === 'Microsoft Aarohi Online (Natural) - Marathi (India) (mr-IN)') || 
                           availableVoices.find(voice => voice.lang === 'hi-IN') || 
                           availableVoices.find(voice => voice.lang === 'mr-IN') || 
@@ -42,10 +42,15 @@ const TextToSpeech = () => {
     }
   };
 
+  const handleStop = () => {
+    window.speechSynthesis.cancel(); // Stops the currently speaking utterance
+  };
+
   return (
     <div>
-      <h1>Friendship Day Surprise फॉर यू किरा!</h1>
+      <h1>Surprise for akka </h1>
       <button onClick={handleSpeak}>Play Surprise Message</button>
+      <button onClick={handleStop}>Stop Message</button> {/* Add Stop button */}
     </div>
   );
 };
