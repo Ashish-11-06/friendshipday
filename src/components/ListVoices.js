@@ -1,36 +1,58 @@
-// src/ListVoices.js
-import React, { useEffect, useState } from 'react';
+// src/TextToSpeech.js
+import React, { useState, useEffect } from 'react';
 
-const ListVoices = () => {
-  const [voices, setVoices] = useState([]);
+const predefinedMessage = "अक्का, अहो अक्का. अक्का मटन  खालल  का? अहो अक्का खाल  का  मटन  ? आ खाल का ";
+
+const TextToSpeech = () => {
+  const [selectedVoice, setSelectedVoice] = useState(null);
 
   useEffect(() => {
     const handleVoicesChanged = () => {
-      setVoices(speechSynthesis.getVoices());
-    };
+      const availableVoices = speechSynthesis.getVoices();
+      console.log('Available voices:', availableVoices); // Log available voices
 
-    speechSynthesis.onvoiceschanged = handleVoicesChanged;
+      // Find and set the desired Marathi voice
+      const targetVoice = availableVoices.find(voice => voice.name.includes('male') && voice.lang === 'mr-IN') ||
+                          availableVoices.find(voice => voice.name === 'Microsoft Aarohi Online (Natural) - Marathi (India) (mr-IN)') || 
+                          availableVoices.find(voice => voice.lang === 'hi-IN') || 
+                          availableVoices.find(voice => voice.lang === 'mr-IN') || 
+                          availableVoices.find(voice => voice.lang === 'en-US'); // Fallback to English if no Marathi voice is available
+      setSelectedVoice(targetVoice);
+    };
 
     // Initial load
     handleVoicesChanged();
-    
+
+    // Listen for voices changed event
+    speechSynthesis.onvoiceschanged = handleVoicesChanged;
+
     return () => {
       speechSynthesis.onvoiceschanged = null;
     };
   }, []);
 
+  const handleSpeak = () => {
+    if (selectedVoice) {
+      const utterance = new SpeechSynthesisUtterance(predefinedMessage);
+      utterance.voice = selectedVoice;
+      utterance.lang = 'mr-IN'; // Set language to Marathi
+      window.speechSynthesis.speak(utterance);
+    } else {
+      alert('No suitable voice available.');
+    }
+  };
+
+  const handleStop = () => {
+    window.speechSynthesis.cancel(); // Stops the currently speaking utterance
+  };
+
   return (
     <div>
-      <h1>Available Voices</h1>
-      <ul>
-        {voices.map((voice, index) => (
-          <li key={index}>
-            {voice.name} ({voice.lang})
-          </li>
-        ))}
-      </ul>
+      <h1>Surprise for akka </h1>
+      <button onClick={handleSpeak}>Play Surprise Message</button>
+      <button onClick={handleStop}>Stop Message</button> {/* Add Stop button */}
     </div>
   );
 };
 
-export default ListVoices;
+export default TextToSpeech;
