@@ -48,7 +48,7 @@ const TextToSpeech = () => {
 
   return (
     <div>
-      <h1>Surprise फॉर यू अक्का !</h1>
+      <h1>Surprise फॉर अक्का !</h1>
       <button onClick={handleSpeak}>Play Surprise Message</button>
       <button onClick={handleStop}>Stop Message</button> {/* Add Stop button */}
     </div>
